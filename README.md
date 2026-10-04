@@ -8,6 +8,8 @@ A collection of reusable agent skills. Each skill is self-contained in its own f
 
 - [`bro`](./skills/bro) — Restates the previous message in plain, concise language.
 - [`skill-creator`](./skills/skill-creator) — Creates, tests, evaluates, and improves agent skills.
+- [`test-driven-development`](./skills/test-driven-development) — Chooses useful verification before applying focused test-first development.
+- [`delegate-agents`](./skills/delegate-agents) — Coordinates workers and independent reviewers with bounded authority across available agent runners. Herdr is optional; no fixed model or provider is required.
 
 ## Install
 
@@ -25,13 +27,20 @@ You can then select the skills you want to install.
 skills/
 ├── bro/
 │   └── SKILL.md
-└── skill-creator/
+├── skill-creator/
+│   ├── SKILL.md
+│   ├── agents/
+│   ├── assets/
+│   ├── eval-viewer/
+│   ├── references/
+│   └── scripts/
+├── test-driven-development/
+│   ├── SKILL.md
+│   ├── deciding-what-to-test.md
+│   └── writing-good-tests.md
+└── delegate-agents/
     ├── SKILL.md
-    ├── agents/
-    ├── assets/
-    ├── eval-viewer/
-    ├── references/
-    └── scripts/
+    └── references/
 ```
 
 Each skill starts with a `SKILL.md` containing its metadata and instructions. Supporting scripts, references, and assets live beside it and are loaded only when needed.
