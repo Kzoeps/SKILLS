@@ -1,0 +1,43 @@
+{
+  "skill_name": "writing-atproto-lexicons",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Create a Lexicon v1 schema for `com.example.events.event` in an otherwise empty workspace. It is a `tid`-keyed record. The event needs a required title limited to 80 visible characters with a sensible storage bound, an optional summary limited to 300 visible characters with a sensible storage bound, a required organizer account reference, required start time, optional end time, an optional visibility whose current values are `public`, `unlisted`, and `private` but which must remain extensible, optional co-hosts that currently need only an account reference but may gain roles later, and an optional image cover limited to `image/*` and 2,000,000 bytes. Save the schema as `event.json` and briefly explain required-field, string-limit, extensibility, and array-shape decisions. Do not add endpoints or publication steps.",
+      "expected_output": "A parseable, valid Lexicon v1 record schema with a described main definition, bounded title/summary strings using grapheme and byte limits, DID account references, datetime formats, knownValues rather than enum, future-extensible object-shaped co-host entries, and a constrained blob, plus concise design notes.",
+      "files": [],
+      "assertions": [
+        "`event.json` parses and declares Lexicon 1, ID `com.example.events.event`, and a described `main` record with key `tid`.",
+        "The required title has `maxGraphemes: 80` and a UTF-8 `maxLength` between 800 and 1600; the optional summary has `maxGraphemes: 300` and `maxLength` between 3000 and 6000.",
+        "The organizer is a required DID-formatted string; the required start time and optional end time use `datetime` format.",
+        "Visibility is optional and uses `knownValues` containing public, unlisted, and private without a closed `enum`.",
+        "Co-hosts are optional and use an array-item `ref` to a named object containing a DID account field (rather than an inline object, which is not valid in Lexicon array items); cover is an optional blob accepting `image/*` with `maxSize: 2000000`.",
+        "The notes explain required fields, byte/grapheme limits, open values, and evolvable co-host shape without adding endpoints or publication steps."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Review the following Lexicon without editing it. Report specification errors separately from style/evolution warnings, give exact JSON paths, explain impact, and propose specific fixes.\n\n```json\n{\n  \"lexicon\": 1,\n  \"id\": \"com.example.events.get_events\",\n  \"defs\": {\n    \"main\": {\n      \"type\": \"query\",\n      \"parameters\": {\n        \"type\": \"params\",\n        \"nullable\": [\"account\"],\n        \"properties\": {\n          \"account\": { \"type\": \"string\", \"format\": \"handle\" },\n          \"include_archived\": { \"type\": \"boolean\", \"default\": true }\n        }\n      },\n      \"output\": {\n        \"schema\": {\n          \"type\": \"object\",\n          \"required\": [\"items\"],\n          \"properties\": {\n            \"$cursor\": { \"type\": \"string\" },\n            \"events\": {\n              \"type\": \"array\",\n              \"items\": { \"type\": \"string\", \"format\": \"at-uri\" }\n            }\n          }\n        }\n      },\n      \"errors\": [{ \"name\": \"not-found\" }]\n    }\n  }\n}\n```",
+      "expected_output": "A structured review that identifies invalid NSID/field naming where applicable, params nullable misuse, missing output encoding, undeclared required property, reserved dollar-prefixed property, and distinguishes these from description, at-identifier, boolean-default, error-casing, pagination, and evolvable array-shape recommendations.",
+      "files": [],
+      "assertions": [
+        "The review reports specification errors for the invalid underscore NSID, params-level `nullable`, missing output `encoding`, undeclared required `items`, and schema-defined `$cursor` property.",
+        "The review treats missing main/endpoint documentation, `handle` instead of `at-identifier`, snake_case/default-true optional boolean, and non-UpperCamelCase error name as style or evolvability warnings rather than Lexicon parser errors.",
+        "The review recommends conventional optional `cursor` plus required `events` pagination output and object-shaped result items as design improvements.",
+        "Findings include exact JSON paths, impact, and concrete fixes, with errors separated from warnings."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Assess a proposed evolution of the already published `com.example.notes.note` record. The current schema requires `text` (string, `maxGraphemes: 300`, `maxLength: 3000`) and `createdAt` (`datetime`). It has an open `attachment` union containing `#image` and `#external`. The proposed revision renames `text` to required `body`, limits it to 100 graphemes and 1000 bytes, adds required `editedAt`, removes `#external`, adds `#video`, and marks the attachment union `closed: true`. Do not write files. Classify every proposed change, explain the old-data/new-data compatibility directions, and recommend the smallest safe path, including whether a new NSID is needed.",
+      "expected_output": "An evolution assessment identifying the rename, new required field, narrowed limits, removed union variant, and closing of the union as breaking; recognizing addition of a variant to the formerly open union as independently compatible; explaining bidirectional compatibility; and recommending preserving the published schema plus a V2 NSID for the incompatible contract, with optional additive alternatives where possible.",
+      "files": [],
+      "assertions": [
+        "The assessment individually identifies renaming `text`, narrowing its limits, adding required `editedAt`, removing `#external`, and closing the open union as breaking for the published schema.",
+        "Adding `#video` is identified as independently compatible only while the union remains open and existing variants remain present.",
+        "The explanation covers both invariants: old data must validate under the new schema and new data must validate under the old schema.",
+        "The recommendation preserves the published NSID and either uses additive compatible changes or creates `com.example.notes.noteV2` for the requested incompatible contract."
+      ]
+    }
+  ]
+}

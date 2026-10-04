@@ -9,6 +9,7 @@ A collection of reusable agent skills. Each skill is self-contained in its own f
 - [`bro`](./skills/bro) — Restates the previous message in plain, concise language.
 - [`skill-creator`](./skills/skill-creator) — Creates, tests, evaluates, and improves agent skills.
 - [`test-driven-development`](./skills/test-driven-development) — Chooses useful verification before applying focused test-first development.
+- [`writing-atproto-lexicons`](./skills/writing-atproto-lexicons) — Designs, reviews, validates, and evolves AT Protocol Lexicon schemas.
 - [`delegate-agents`](./skills/delegate-agents) — Coordinates workers and independent reviewers with bounded authority across available agent runners. Herdr is optional; no fixed model or provider is required.
 
 ## Install
@@ -38,9 +39,13 @@ skills/
 │   ├── SKILL.md
 │   ├── deciding-what-to-test.md
 │   └── writing-good-tests.md
-└── delegate-agents/
+├── delegate-agents/
+│   ├── SKILL.md
+│   └── references/
+└── writing-atproto-lexicons/
     ├── SKILL.md
-    └── references/
+    ├── references/
+    └── evals/
 ```
 
 Each skill starts with a `SKILL.md` containing its metadata and instructions. Supporting scripts, references, and assets live beside it and are loaded only when needed.
